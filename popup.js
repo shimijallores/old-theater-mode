@@ -1,3 +1,7 @@
+if (typeof browser === "undefined") {
+  var browser = chrome;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const toggleOldStyleBtn = document.getElementById("toggleOldStyle");
   const reloaderBtn = document.getElementById("reloader");
@@ -5,21 +9,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleOldStyleBtn.addEventListener("click", async () => {
     try {
-      const [tab] = await chrome.tabs.query({
+      const [tab] = await browser.tabs.query({
         active: true,
         currentWindow: true,
       });
 
       if (tab.url && tab.url.includes("youtube.com/watch")) {
         try {
-          await chrome.tabs.sendMessage(tab.id, { action: "ping" });
+          await browser.tabs.sendMessage(tab.id, { action: "ping" });
         } catch (e) {
           statusDiv.textContent =
             "Extension not loaded on this page. Please refresh and try again.";
           return;
         }
 
-        const response = await chrome.tabs.sendMessage(tab.id, {
+        const response = await browser.tabs.sendMessage(tab.id, {
           action: "applyOldStyle",
         });
         statusDiv.textContent = response.success
@@ -40,21 +44,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   reloaderBtn.addEventListener("click", async () => {
     try {
-      const [tab] = await chrome.tabs.query({
+      const [tab] = await browser.tabs.query({
         active: true,
         currentWindow: true,
       });
 
       if (tab.url && tab.url.includes("youtube.com/watch")) {
         try {
-          await chrome.tabs.sendMessage(tab.id, { action: "ping" });
+          await browser.tabs.sendMessage(tab.id, { action: "ping" });
         } catch (e) {
           statusDiv.textContent =
             "Extension not loaded on this page. Please refresh and try again.";
           return;
         }
 
-        const response = await chrome.tabs.sendMessage(tab.id, {
+        const response = await browser.tabs.sendMessage(tab.id, {
           action: "revertToDefault",
         });
         statusDiv.textContent = response.success
@@ -73,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const currentTab = tabs[0];
     if (!currentTab.url || !currentTab.url.includes("youtube.com")) {
       statusDiv.textContent = "Navigate to YouTube to use this extension";

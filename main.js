@@ -1,3 +1,7 @@
+if (typeof browser === "undefined") {
+  var browser = chrome;
+}
+
 function forceOldTheaterMode() {
   // Hide sidebar
   const related = document.querySelector(
@@ -14,6 +18,15 @@ function forceOldTheaterMode() {
   }
 
   applyOldTheaterModeStyles();
+}
+
+function toggleTheaterMode() {
+  const theaterButton = document.querySelector(".ytp-size-button");
+  if (theaterButton) {
+    theaterButton.click();
+    return true;
+  }
+  return false;
 }
 
 function applyOldTheaterModeStyles() {
@@ -89,7 +102,7 @@ function applyOldTheaterModeStyles() {
 }
 
 // Listen for messages from popup
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log(request);
 
   if (request.action === "ping") {
