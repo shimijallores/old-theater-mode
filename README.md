@@ -17,3 +17,7 @@ I had to make this cuz im annoyed by the new theater mode
 3. Click on "Load Temporary Add-on" and select the `manifest.json` file from this extension's folder.
 
 you can install it yourself mwehhee i dont have money for webstore fee
+
+### Example
+
+![Extension demo](/screenshots/demo.png)
