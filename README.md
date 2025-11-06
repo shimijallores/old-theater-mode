@@ -4,6 +4,8 @@ I had to make this cuz im annoyed by the new theater mode
 
 ## Installation
 
+Download this repository as a zip file and extract
+
 ### Google Chrome
 
 1. Open Google Chrome and navigate to `chrome://extensions/`.
@@ -20,4 +22,4 @@ you can install it yourself mwehhee i dont have money for webstore fee
 
 ### Example
 
-![Extension demo](/screenshots/demo.png)
+![Extension demo](/screenshots/2.png)
