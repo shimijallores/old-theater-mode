@@ -3,15 +3,31 @@ if (typeof browser === "undefined") {
 }
 
 function forceOldTheaterMode() {
-  // Hide sidebar
-  const related = document.querySelector(
-    "#related, #secondary, ytd-watch-next-secondary-results-renderer"
-  );
-  if (related) {
-    related.style.display = "none";
+  if (document.getElementById("comments-secondary-wrapper")) {
+    return; 
   }
 
   const primary = document.querySelector("#primary");
+  const secondary = document.querySelector("#secondary");
+  const comments = document.querySelector("ytd-comments");
+
+  if (primary && secondary && comments) {
+    // Create a new wrapper div to beside yt-comments show recommendations
+    const wrapper = document.createElement("div");
+    wrapper.id = "comments-secondary-wrapper";
+    wrapper.style.display = "grid";
+    wrapper.style.gridTemplateColumns = "60% 40%";
+    wrapper.style.gap = "16px";
+    wrapper.style.marginTop = "16px";
+
+    // Move comments and secondary into the new wrapper
+    comments.parentNode.removeChild(comments);
+    secondary.parentNode.removeChild(secondary);
+    wrapper.appendChild(comments);
+    wrapper.appendChild(secondary);
+    primary.appendChild(wrapper);
+  }
+
   if (primary) {
     primary.style.width = "100%";
     primary.style.maxWidth = "none";
@@ -43,15 +59,14 @@ function applyOldTheaterModeStyles() {
 
     /* Hide the related videos/recommendations that appear in new theater mode */
     ytd-watch-flexy[theater] #related,
-    ytd-watch-flexy[theater] #secondary,
     ytd-watch-flexy[theater] ytd-watch-next-secondary-results-renderer {
       display: none !important;
     }
 
-    /* Hide the comments section in theater mode */
-    ytd-watch-flexy[theater] ytd-comments {
+    /* Don't hide comments and secondary - they are now in a grid */
+    /* ytd-watch-flexy[theater] ytd-comments {
       display: none !important;
-    }
+    } */
 
     /* Make sure the primary content (video) takes full width */
     ytd-watch-flexy[theater] #primary {
@@ -96,6 +111,14 @@ function applyOldTheaterModeStyles() {
     .ytp-cards-teaser {
       display: none !important;
     }
+
+    /* Style the comments-secondary wrapper */
+    #comments-secondary-wrapper {
+      display: grid !important;
+      grid-template-columns: 60% 40% !important;
+      gap: 16px !important;
+      margin-top: 16px !important;
+    }
   `;
   document.head.appendChild(style);
   console.log("Applied old theater mode styles");
@@ -123,6 +146,19 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (primary) {
       primary.style.width = "";
       primary.style.maxWidth = "";
+    }
+    // Undo DOM changes
+    const wrapper = document.getElementById("comments-secondary-wrapper");
+    if (wrapper) {
+      const comments = wrapper.querySelector("ytd-comments");
+      const secondary = wrapper.querySelector("#secondary");
+      if (comments) {
+        primary.appendChild(comments);
+      }
+      if (secondary) {
+        primary.parentNode.appendChild(secondary);
+      }
+      wrapper.remove();
     }
     // Show the sidebar again
     const related = document.querySelector(
