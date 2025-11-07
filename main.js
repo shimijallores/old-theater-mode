@@ -56,43 +56,31 @@ function applyOldTheaterModeStyles() {
   const style = document.createElement("style");
   style.id = "old-theater-styles";
   style.textContent = `
-    /* Old theater mode styles - hide recommendations and make it like classic theater */
-
-    /* Hide the related videos/recommendations that appear in new theater mode */
     ytd-watch-flexy[theater] #related,
     ytd-watch-flexy[theater] ytd-watch-next-secondary-results-renderer {
       display: none !important;
     }
 
-    /* Don't hide comments and secondary - they are now in a grid */
-    /* ytd-watch-flexy[theater] ytd-comments {
-      display: none !important;
-    } */
 
-    /* Make sure the primary content (video) takes full width */
     ytd-watch-flexy[theater] #primary {
       width: 100% !important;
       max-width: none !important;
     }
 
-    /* Ensure the player container is properly sized */
     ytd-watch-flexy[theater] #player-container-inner {
       max-width: none !important;
       width: 100% !important;
     }
 
-    /* Hide any overlay elements that might show recommendations */
     ytd-watch-flexy[theater] .ytp-endscreen-overlay,
     ytd-watch-flexy[theater] .ytp-overlay {
       display: none !important;
     }
 
-    /* Prevent scrolling to show recommendations */
     ytd-watch-flexy[theater] #page-manager {
       overflow: hidden !important;
     }
 
-    /* Ensure theater mode doesn't have the new overlay behavior */
     ytd-watch-flexy[theater] #player-theater-container {
       position: static !important;
       height: auto !important;
@@ -107,19 +95,16 @@ function applyOldTheaterModeStyles() {
     border-radius: 0 !important;
     }
 
-    /* Make the video player background black like old theater */
     ytd-watch-flexy[theater] .html5-video-container {
       background: #000 !important;
       border-radius: 0 !important;
     }
 
-    /* Hide any "related videos" overlays */
     .ytp-cards-overlay,
     .ytp-cards-teaser {
       display: none !important;
     }
 
-    /* Style the comments-secondary wrapper */
     #comments-secondary-wrapper {
       display: grid !important;
       grid-template-columns: 60% 40% !important;
@@ -181,3 +166,19 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   return true;
 });
+
+// Check and apply default setting on page load
+async function checkDefaultSetting() {
+  try {
+    const result = await browser.storage.local.get(["oldTheaterModeDefault"]);
+    if (result.oldTheaterModeDefault) {
+      setTimeout(() => {
+        forceOldTheaterMode();
+      }, 1000);
+    }
+  } catch (error) {
+    console.log("Error checking default setting:", error);
+  }
+}
+
+checkDefaultSetting();

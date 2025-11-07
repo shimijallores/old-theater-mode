@@ -26,6 +26,10 @@
         font-size: 12px;
         color: #666;
       }
+
+      .notice {
+        font-size: 10px;
+      }
     </style>
   </head>
   <body>
@@ -34,7 +38,16 @@
     <button id="toggleOldStyle">Old Theater Mode</button>
     <button id="reloader">Revert to Default</button>
 
-    <div class="status" id="status">Ready</div>
+    <div style="margin: 10px 0">
+      <label>
+        <input type="checkbox" id="defaultSetting" /> Apply as default
+      </label>
+    </div>
+    <span class="status" id="status">Ready</span>
+
+    <p class="notice">
+      <strong>Note:</strong> Sometimes it requires a page reload to workk
+    </p>
 
     <script src="popup.js"></script>
   </body>

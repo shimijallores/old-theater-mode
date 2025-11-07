@@ -6,6 +6,25 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleOldStyleBtn = document.getElementById("toggleOldStyle");
   const reloaderBtn = document.getElementById("reloader");
   const statusDiv = document.getElementById("status");
+  const defaultSettingCheckbox = document.getElementById("defaultSetting");
+
+  // Load default setting
+  browser.storage.local.get(["oldTheaterModeDefault"], (result) => {
+    defaultSettingCheckbox.checked = result.oldTheaterModeDefault || false;
+  });
+
+  // Save default setting when changed
+  defaultSettingCheckbox.addEventListener("change", () => {
+    browser.storage.local.set({
+      oldTheaterModeDefault: defaultSettingCheckbox.checked,
+    });
+    statusDiv.textContent = defaultSettingCheckbox.checked
+      ? "Default enabled"
+      : "Default disabled";
+    setTimeout(() => {
+      statusDiv.textContent = "Ready";
+    }, 2000);
+  });
 
   toggleOldStyleBtn.addEventListener("click", async () => {
     try {
