@@ -4,13 +4,14 @@ if (typeof browser === "undefined") {
 
 function forceOldTheaterMode() {
   if (document.getElementById("comments-secondary-wrapper")) {
-    return; 
+    return;
   }
 
   const primary = document.querySelector("#primary");
   const secondary = document.querySelector("#secondary");
   const comments = document.querySelector("ytd-comments");
 
+  // Add recommendations besides the comments
   if (primary && secondary && comments) {
     // Create a new wrapper div to beside yt-comments show recommendations
     const wrapper = document.createElement("div");
@@ -99,11 +100,17 @@ function applyOldTheaterModeStyles() {
 
     #player {
     background-color: rgb(10 10 10) !important;
+    border-radius: 0 !important;
+    }
+
+    #ytd-player {
+    border-radius: 0 !important;
     }
 
     /* Make the video player background black like old theater */
     ytd-watch-flexy[theater] .html5-video-container {
       background: #000 !important;
+      border-radius: 0 !important;
     }
 
     /* Hide any "related videos" overlays */
